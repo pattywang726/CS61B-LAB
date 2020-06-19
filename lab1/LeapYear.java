@@ -2,9 +2,15 @@
  *  @author YOUR NAME HERE
  */
 public class LeapYear {
-
+    private static boolean isLeapYear(int year){
+      if (year % 4 == 0){
+        return True
+      }else{
+        return Flase
+      }
+    }
     /** Calls isLeapYear to print correct statement.
-     *  @param  year to be analyzed
+     *  @param year to be analyzed
      */
     private static void checkLeapYear(int year) {
         if (isLeapYear(year)) {
@@ -30,4 +36,3 @@ public class LeapYear {
         }
     }
 }
-
