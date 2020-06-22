@@ -27,8 +27,8 @@ public class NBody{
     return allPlanets;
   }
 
-  public static String imageToDraw = "./images/starfield.jpg";
-  public static void drawing(double Radius, Planet[] allPlanets){
+  private static String imageToDraw = "./images/starfield.jpg";
+  private static void drawing(double Radius, Planet[] allPlanets){
     /** Sets up the universe, it is square, since there is no setXScale and setYScale **/
     StdDraw.setScale(0, Radius); /*default is 0-1.0 */
     StdDraw.clear();

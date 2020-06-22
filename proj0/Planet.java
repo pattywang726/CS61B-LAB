@@ -91,7 +91,7 @@ public class Planet {
     }
 
     // public String imagePlanet = this.imgFileName;  /*??? it is no input, cannot use this.imgFileName, this.xxPos or this.yyPos*/
-    public void draw(){
+    private void draw(){
                                    /*imgFileName is obtianed from Me, so method draw should be non-static;*/
       StdDraw.picture(xxPos, yyPos, "./images/" + imgFileName); /*imgFileName has been set at the beginning, "public String imagePlanet = imgFileName;" doesn't work!!!*/
     }
