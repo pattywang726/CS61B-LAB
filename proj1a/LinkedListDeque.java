@@ -1,8 +1,8 @@
 public class LinkedListDeque<BleepBlorp> {
     private class StuffNode {
-        public BleepBlorp item;
-        public StuffNode prev;
-        public StuffNode next;
+        private BleepBlorp item;
+        private StuffNode prev;
+        private StuffNode next;
 
         public StuffNode(StuffNode m, BleepBlorp i, StuffNode n) {
             prev = m;
@@ -60,7 +60,7 @@ public class LinkedListDeque<BleepBlorp> {
     }
 
     // Returns true if deque is empty, false otherwise. //
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         if (size == 0){
             return true;
         } else{
@@ -72,8 +72,8 @@ public class LinkedListDeque<BleepBlorp> {
         return size;
     }
 
-    public void printDeque(){
-        if (isEmpty()){
+    public void printDeque() {
+        if (isEmpty()) {
             System.out.print(' ');
         }
 
@@ -83,41 +83,41 @@ public class LinkedListDeque<BleepBlorp> {
             System.out.print(p.item);
             System.out.print(' ');
             p = p.next;
-            }
+        }
     }
 
     public BleepBlorp removeFirst(){
         if (isEmpty()){
             return null;
         }
-        BleepBlorp First = sentinel.next.item;
+        BleepBlorp first = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
         size = size - 1;
 
-        return First;
+        return first;
     }
 
-    public BleepBlorp removeLast(){
-        if (isEmpty()){
+    public BleepBlorp removeLast() {
+        if (isEmpty()) {
             return null;
         }
-        BleepBlorp Last = sentinel.next.item;
+        BleepBlorp last = sentinel.next.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
 
         size = size - 1;
-        return Last;
+        return last;
     }
 
-    public BleepBlorp get(int index){
-        if (index >= size){
+    public BleepBlorp get(int index) {
+        if (index >= size) {
             return null;
         }
 
         StuffNode p = sentinel.next;
 
-        for(int i=0; i<size; i+=1){
+        for (int i=0; i<size; i+=1) {
             if (i == index){
                 break;
             }

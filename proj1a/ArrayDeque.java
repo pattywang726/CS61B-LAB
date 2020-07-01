@@ -58,32 +58,32 @@ public class ArrayDeque<Item> {
         return size;
     }
 
-    private int Non0nextLast(int nextLast){
-        if (nextLast == 0){
+    private int non0nextLast(int Last){
+        if (Last == 0){
             return size;
         }else{
-            return nextLast;
+            return Last;
         }
     }
 
-    private int Be0nextFirst(int nextFirst){
-        if (nextFirst+1 == size){
-            return size;
-        }else{
-            return nextLast;
-        }
-    }
+//    private int be0nextFirst(int First) {
+//        if (First+1 == size){
+//            return size;
+//        }else{
+//            return First;
+//        }
+//    }
 
     public void printDeque(){
-        for (int i=nextFirst+1; i<items.length ; i+=1){
+        for (int i=nextFirst+1; i<items.length ; i+=1) {
             System.out.print(items[i]);
             System.out.print(' ');
         }
         if (size >= items.length-nextFirst){
-            for (int j=0; j<Non0nextLast(nextLast) ; j+=1){
+            for (int j=0; j<non0nextLast(nextLast) ; j+=1){
                 System.out.print(items[j]);
                 System.out.print(' ');
-        }
+            }
         }
     }
     /** Returns the item from the last of the list. */
@@ -96,20 +96,22 @@ public class ArrayDeque<Item> {
         return items[(nextFirst + 1) % items.length];
     }
 
-    public Item removeLast(){
-        if (size / Double.valueOf(items.length) <= 0.50 && items.length > 16)
+    public Item removeLast() {
+        if (size / (double) items.length <= 0.50 && items.length > 16){
             resize(size * 2);
+        }
 
         Item x = getLast();
         items[nextLast - 1] = null;
         size = size - 1;
-        nextLast = Non0nextLast(nextLast) - 1;
+        nextLast = non0nextLast(nextLast) - 1;
         return x;
     }
 
-    public Item removeFirst(){
-        if (size / Double.valueOf(items.length) <= 0.25 && items.length > 16)
+    public Item removeFirst() {
+        if (size / (double) items.length <= 0.25 && items.length > 16) {
             resize(size * 2);
+        }
 
         Item y = getFirst();
         items[nextFirst + 1] = null;
