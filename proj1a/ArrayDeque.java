@@ -20,7 +20,7 @@ public class ArrayDeque<T> {
             nextFirst = capacity - 1;
             nextLast = size;
         } else {
-            System.arraycopy(items, nextFirst + 1, a, nextFirst + 1 + capacity - size, size - (nextFirst + 1));
+            System.arraycopy(items, nextFirst + 1, a, nextFirst + 1 + capacity - size, size - (nextFirst+1)%items.length);
             System.arraycopy(items, 0, a, 0, nextLast);
             items = a;
             nextFirst = nextFirst + capacity - size; // size is still 8, but list length doubled.
@@ -58,7 +58,7 @@ public class ArrayDeque<T> {
         return size;
     }
 
-    private int non0nextLast(int Last){
+    private int non0(int Last){
         if (Last == 0){
             return size;
         }else{
@@ -66,11 +66,11 @@ public class ArrayDeque<T> {
         }
     }
 
-//    private int be0nextFirst(int First) {
+//    private int be0(int First) {
 //        if (First+1 == size){
-//            return size;
+//            return 0;
 //        }else{
-//            return First;
+//            return First + 1;
 //        }
 //    }
 
@@ -80,7 +80,7 @@ public class ArrayDeque<T> {
             System.out.print(' ');
         }
         if (size >= items.length-nextFirst){
-            for (int j=0; j<non0nextLast(nextLast) ; j+=1){
+            for (int j=0; j<non0(nextLast) ; j+=1){
                 System.out.print(items[j]);
                 System.out.print(' ');
             }
@@ -97,26 +97,34 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
+
         if (size / (double) items.length <= 0.50 && items.length > 16){
             resize(size * 2);
         }
 
         T x = getLast();
-        items[nextLast - 1] = null;
+        items[non0(nextLast) - 1] = null;
         size = size - 1;
-        nextLast = non0nextLast(nextLast) - 1;
+        nextLast = non0(nextLast) - 1;
         return x;
     }
 
     public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
+
         if (size / (double) items.length <= 0.25 && items.length > 16) {
             resize(size * 2);
         }
 
         T y = getFirst();
-        items[nextFirst + 1] = null;
+        items[(nextFirst+1)%items.length] = null;
         size = size - 1;
-        nextFirst = (nextFirst + 1) % items.length;
+        nextFirst = (nextFirst+1)%items.length;
         return y;
     }
     public T get(int index) {
