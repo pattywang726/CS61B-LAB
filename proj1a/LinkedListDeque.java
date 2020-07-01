@@ -1,10 +1,10 @@
-public class LinkedListDeque<BleepBlorp> {
+public class LinkedListDeque<T> {
     private class StuffNode {
-        private BleepBlorp item;
+        private T item;
         private StuffNode prev;
         private StuffNode next;
 
-        public StuffNode(StuffNode m, BleepBlorp i, StuffNode n) {
+        public StuffNode(StuffNode m, T i, StuffNode n) {
             prev = m;
             item = i;
             next = n;
@@ -15,7 +15,7 @@ public class LinkedListDeque<BleepBlorp> {
     /* The first item (if it exists) is at sentinel.next. */
     private StuffNode sentinel;
     private int size;
-//    public BleepBlorp[] list_item;
+//    public T[] list_item;
 
     /** Creates an empty SLList. */
     public LinkedListDeque() {
@@ -25,7 +25,7 @@ public class LinkedListDeque<BleepBlorp> {
         size = 0;
     }
 
-//    public LinkedListDeque(BleepBlorp x) {
+//    public LinkedListDeque(T x) {
 //        sentinel = new StuffNode(null,null,null);
 //        sentinel.next = new StuffNode(null,x,null);
 //        sentinel.next.next = sentinel;
@@ -37,7 +37,7 @@ public class LinkedListDeque<BleepBlorp> {
 //    }
 
     /** Adds x to the front of the list. */
-    public void addFirst(BleepBlorp x) {
+    public void addFirst(T x) {
         if (isEmpty()){
             sentinel.next = new StuffNode(sentinel, x, sentinel);
             sentinel.prev = sentinel.next;
@@ -48,7 +48,7 @@ public class LinkedListDeque<BleepBlorp> {
         size = size + 1;
     }
 
-    public void addLast(BleepBlorp x) {
+    public void addLast(T x) {
         if (isEmpty()){
             sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
             sentinel.next = sentinel.prev;
@@ -86,11 +86,11 @@ public class LinkedListDeque<BleepBlorp> {
         }
     }
 
-    public BleepBlorp removeFirst(){
+    public T removeFirst(){
         if (isEmpty()){
             return null;
         }
-        BleepBlorp first = sentinel.next.item;
+        T first = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
         size = size - 1;
@@ -98,11 +98,11 @@ public class LinkedListDeque<BleepBlorp> {
         return first;
     }
 
-    public BleepBlorp removeLast() {
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
-        BleepBlorp last = sentinel.next.item;
+        T last = sentinel.next.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
 
@@ -110,7 +110,7 @@ public class LinkedListDeque<BleepBlorp> {
         return last;
     }
 
-    public BleepBlorp get(int index) {
+    public T get(int index) {
         if (index >= size) {
             return null;
         }
@@ -130,14 +130,14 @@ public class LinkedListDeque<BleepBlorp> {
      * Same as get, but uses recursion
      * First, need a private helper method
      */
-    private BleepBlorp getRecursive(int index, StuffNode curr){
+    private T getRecursive(int index, StuffNode curr){
         if (index == (size()-1)) {
             return curr.item;
         }
         return getRecursive(index+1, curr.prev);
     }
 
-    public BleepBlorp getRecursive(int index){
+    public T getRecursive(int index){
         if (index >= size()){
             return null;
         }

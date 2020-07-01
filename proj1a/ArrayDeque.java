@@ -1,19 +1,19 @@
-public class ArrayDeque<Item> {
-    private Item[] items;
+public class ArrayDeque<T> {
+    private T[] items;
     private int size;
     private int nextFirst;
     private int nextLast;
 
     /** The starting sizArrayDequee of your array should be 8. start my array at 4*/
     public ArrayDeque() {
-        items = (Item[]) new Object[8]; // special way for creating generic Array list;
+        items = (T[]) new Object[8]; // special way for creating generic Array list;
         size = 0;
         nextFirst = 4;
         nextLast = 5;
     }
 
     private void resize(int capacity){
-        Item[] a = (Item[]) new Object[capacity];
+        T[] a = (T[]) new Object[capacity];
         if (nextLast == 0){
             System.arraycopy(items, 0, a, 0, size);
             items = a;
@@ -27,7 +27,7 @@ public class ArrayDeque<Item> {
         }
     }
 
-    public void addLast(Item x){
+    public void addLast(T x){
         if (size == items.length){
             resize(size * 2);
         }
@@ -36,7 +36,7 @@ public class ArrayDeque<Item> {
         nextLast = (nextLast % items.length + 1)%items.length;
     }
 
-    public void addFirst(Item x){
+    public void addFirst(T x){
         if (size == items.length){
             resize(size * 2);
         }
@@ -87,39 +87,39 @@ public class ArrayDeque<Item> {
         }
     }
     /** Returns the item from the last of the list. */
-    private Item getLast() {
+    private T getLast() {
         return items[((nextLast + items.length) - 1) % items.length];
     }
 
     /** Returns the item from the first of the list. */
-    private Item getFirst() {
+    private T getFirst() {
         return items[(nextFirst + 1) % items.length];
     }
 
-    public Item removeLast() {
+    public T removeLast() {
         if (size / (double) items.length <= 0.50 && items.length > 16){
             resize(size * 2);
         }
 
-        Item x = getLast();
+        T x = getLast();
         items[nextLast - 1] = null;
         size = size - 1;
         nextLast = non0nextLast(nextLast) - 1;
         return x;
     }
 
-    public Item removeFirst() {
+    public T removeFirst() {
         if (size / (double) items.length <= 0.25 && items.length > 16) {
             resize(size * 2);
         }
 
-        Item y = getFirst();
+        T y = getFirst();
         items[nextFirst + 1] = null;
         size = size - 1;
         nextFirst = (nextFirst + 1) % items.length;
         return y;
     }
-    public Item get(int index) {
+    public T get(int index) {
         if (index < items.length - nextFirst - 1) {
             return items[index + nextFirst + 1];
         } else {
