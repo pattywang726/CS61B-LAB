@@ -38,24 +38,24 @@ public class LinkedListDeque<T> {
 
     /** Adds x to the front of the list. */
     public void addFirst(T x) {
-        if (isEmpty()){
-            sentinel.next = new StuffNode(sentinel, x, sentinel);
-            sentinel.prev = sentinel.next;
-        }else {
+//        if (isEmpty()){
+//            sentinel.next = new StuffNode(sentinel, x, sentinel);
+//            sentinel.prev = sentinel.next;
+//        }else {
             sentinel.next = new StuffNode(sentinel, x, sentinel.next);
             sentinel.next.next.prev = sentinel.next;
-        }
+//        }
         size = size + 1;
     }
 
     public void addLast(T x) {
-        if (isEmpty()){
-            sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
-            sentinel.next = sentinel.prev;
-        }else {
+//        if (isEmpty()){
+//            sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
+//            sentinel.next = sentinel.prev;
+//        }else {
             sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
             sentinel.prev.prev.next = sentinel.prev;
-        }
+//        }
         size = size + 1;
     }
 
@@ -86,15 +86,15 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public T removeFirst(){
+    public T removeFirst() {
         if (isEmpty()){
             return null;
         }
         T first = sentinel.next.item;
         sentinel.next = sentinel.next.next;
         sentinel.next.prev = sentinel;
-        size = size - 1;
 
+        size = size - 1;
         return first;
     }
 
@@ -131,16 +131,16 @@ public class LinkedListDeque<T> {
      * First, need a private helper method
      */
     private T getRecursive(int index, StuffNode curr){
-        if (index == (size()-1)) {
+        if (index == 0) {
             return curr.item;
         }
-        return getRecursive(index+1, curr.prev);
+        return getRecursive(index - 1, curr.next);
     }
 
     public T getRecursive(int index){
         if (index >= size()){
             return null;
         }
-        return getRecursive(index, sentinel.prev);
+        return getRecursive(index, sentinel.next);
     }
 }
