@@ -38,13 +38,13 @@ public class LinkedListDeque<T> {
 
     /** Adds x to the front of the list. */
     public void addFirst(T x) {
-//        if (isEmpty()){
-//            sentinel.next = new StuffNode(sentinel, x, sentinel);
-//            sentinel.prev = sentinel.next;
-//        }else {
+        if (isEmpty()){
+            sentinel.next = new StuffNode(sentinel, x, sentinel);  // this is wired
+            sentinel.prev = sentinel.next;
+        }else {
             sentinel.next = new StuffNode(sentinel, x, sentinel.next);
             sentinel.next.next.prev = sentinel.next;
-//        }
+        }
         size = size + 1;
     }
 
