@@ -49,26 +49,22 @@ public class LinkedListDeque<T> {
     }
 
     public void addLast(T x) {
-//        if (isEmpty()){
-//            sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
-//            sentinel.next = sentinel.prev;
-//        }else {
+        if (isEmpty()){
+            sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
+            sentinel.next = sentinel.prev;
+        }else {
             sentinel.prev = new StuffNode(sentinel.prev, x, sentinel);
             sentinel.prev.prev.next = sentinel.prev;
-//        }
+        }
         size = size + 1;
     }
 
     // Returns true if deque is empty, false otherwise. //
     public boolean isEmpty() {
-        if (size == 0){
-            return true;
-        } else{
-            return false;
-        }
+        return size == 0;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
