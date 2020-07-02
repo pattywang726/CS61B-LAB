@@ -43,7 +43,7 @@ public class LinkedListDeque<T> {
             sentinel.prev = sentinel.next;
         }else {
             sentinel.next = new StuffNode(sentinel, x, sentinel.next);
-            sentinel.next.next.prev = sentinel.next.next;
+            sentinel.next.next.prev = sentinel.next;
         }
         size = size + 1;
     }
