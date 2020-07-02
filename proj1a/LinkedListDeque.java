@@ -102,7 +102,7 @@ public class LinkedListDeque<T> {
         if (isEmpty()) {
             return null;
         }
-        T last = sentinel.next.item;
+        T last = sentinel.prev.item;
         sentinel.prev = sentinel.prev.prev;
         sentinel.prev.next = sentinel;
 
