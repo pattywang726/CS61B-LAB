@@ -65,6 +65,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public T peek() {
         // TODO: Return the first item. None of your instance variables should change.
+        if (isEmpty()) {
+            throw new RuntimeException("Ring Buffer Underflow");
+        }
         T oldestItem = rb[first];
         return oldestItem;
     }
@@ -74,10 +77,10 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
         return new KeyInterator();
     }
 
-    public class KeyInterator implements Iterator<T>{
+    private class KeyInterator implements Iterator<T> {
         private int ptr;
         private int scan;
-        public KeyInterator(){
+        KeyInterator(){
             ptr = first;
             scan = 1;
         }
