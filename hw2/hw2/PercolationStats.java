@@ -5,11 +5,11 @@ import edu.princeton.cs.introcs.StdStats;
 import java.lang.Math;
 
 public class PercolationStats {
-    public int T;
-    public int N;
-    public PercolationFactory pf;
-    public int[] countOpen;
-//    public Integer[] openArray;
+    private int T;
+    private int N;
+    private PercolationFactory pf;
+    private double[] countOpen;
+    /* public Integer[] openArray; */
 
     // perform T independent experiments on an N-by-N grid
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -24,7 +24,7 @@ public class PercolationStats {
                 int col = StdRandom.uniform(N);
                 test.open(row, col);
             }
-            int OpenPercen = test.numberOfOpenSites() / (N * N);
+            double OpenPercen = test.numberOfOpenSites() / (double) (N * N);
             countOpen[i] = OpenPercen;
 //            openArray[i] = Integer.valueOf(OpenPercen);
         }

@@ -2,15 +2,14 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import static org.junit.Assert.*;
-import org.junit.Test;
 
 public class Percolation {
-    public int[] sites;
-    public int n;
-    public WeightedQuickUnionUF WQU;
-    public int openNum = 0;
-    public boolean ifPercolate = false;
-    public int bottomP;
+    private int[] sites;
+    private int n;
+    private WeightedQuickUnionUF WQU;
+    private int openNum = 0;
+    private boolean ifPercolate = false;
+    private int bottomP;
 
     // create N-by-N grid, with all sites initially blocked
     public Percolation(int N) {
