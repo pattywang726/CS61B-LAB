@@ -28,6 +28,7 @@ public class PercolationStats {
             countOpen[i] = OpenPercen;
 //            openArray[i] = Integer.valueOf(OpenPercen);
         }
+        countOpen = countOpen;
     }
 
     // sample mean of percolation threshold
@@ -51,6 +52,5 @@ public class PercolationStats {
         double highP = mean() + (1.96 * stddev()) / Math.sqrt(Double.valueOf(T));
         return highP;
     }
-
 
 }
