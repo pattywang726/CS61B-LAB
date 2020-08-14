@@ -5,18 +5,19 @@ import edu.princeton.cs.introcs.StdStats;
 import java.lang.Math;
 
 public class PercolationStats {
-    private int T;
-    private int N;
-    private PercolationFactory pf;
+    private int numTrails;
     private double[] countOpen;
-    /* public Integer[] openArray; */
 
     // perform T independent experiments on an N-by-N grid
+    // this is constructor
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        this.T= T;
-        this.N = N;
-        this.pf = pf;
-//        openArray = new Integer[N * N];
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        numTrails= T;
+        // List building needs the instantiation; otherwise will throw the NullPointerException;
+        countOpen = new double[T];
         for (int i = 0; i < T; i += 1) {
             Percolation test = pf.make(N);
             while (!test.percolates()) {
@@ -24,11 +25,10 @@ public class PercolationStats {
                 int col = StdRandom.uniform(N);
                 test.open(row, col);
             }
-            double OpenPercen = test.numberOfOpenSites() / (double) (N * N);
+            double OpenPercen = (double) test.numberOfOpenSites() / (N * N);
             countOpen[i] = OpenPercen;
-//            openArray[i] = Integer.valueOf(OpenPercen);
+
         }
-        countOpen = countOpen;
     }
 
     // sample mean of percolation threshold
@@ -43,13 +43,13 @@ public class PercolationStats {
 
     // low endpoint of 95% confidence interval
     public double confidenceLow() {
-        double lowP = mean() - (1.96 * stddev()) / Math.sqrt(Double.valueOf(T));
+        double lowP = mean() - (1.96 * stddev()) / Math.sqrt(Double.valueOf(numTrails));
         return lowP;
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHigh() {
-        double highP = mean() + (1.96 * stddev()) / Math.sqrt(Double.valueOf(T));
+        double highP = mean() + (1.96 * stddev()) / Math.sqrt(Double.valueOf(numTrails));
         return highP;
     }
 

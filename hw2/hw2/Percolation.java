@@ -14,6 +14,7 @@ public class Percolation {
     private WeightedQuickUnionUF ufExcludeBottom;
 
     // create N-by-N grid, with all sites initially blocked
+    // this is constructor
     public Percolation(int N) {
         //The constructor should throw a java.lang.IllegalArgumentException if N ≤ 0.
         if (N<=0) {
@@ -25,6 +26,9 @@ public class Percolation {
         bottomP = N * N + 1;
         WQU = new WeightedQuickUnionUF(N * N + 2);
         ufExcludeBottom = new WeightedQuickUnionUF(N * N + 1);
+
+        //The constructor should take time proportional to N square; this runtime depends on
+        // the time of building the WeightedQuickUnionUF, ~N * N elements.
 
         /* The connection of virtual tip or bottom is carried out when open sites.
            thus, the isOpen() doesn't have to be included in the isFull() */
