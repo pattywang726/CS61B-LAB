@@ -41,10 +41,25 @@ public class TestComplexOomage {
     public void testWithDeadlyParams() {
         List<Oomage> deadlyList = new ArrayList<>();
         // 256 base: 2 to the power of 6.
+//        for (int i = 0; i < 10; i += 1) {
+//            List<Integer> params = new ArrayList<>(i);
+//            for (Integer k : params) {
+//                k = 1;
+//            }
+//            ComplexOomage com = new ComplexOomage(params);
+//            deadlyList.add(com);
+//        }
+
+        // Your code here.
         for (int i = 0; i < 10; i += 1) {
-            List<Integer> params = new ArrayList<>(i);
-            for (Integer k : params) {
-                k = 1;
+            ArrayList<Integer> params = new ArrayList<>();
+            params.add(i);
+            // According to hashCode() in ComplexOomage.java and Hint.java,
+            // if the hashCode exceeds 256e3, it will overflow to 0.
+            // Use add(i) rather than add(some_constant) will let built-in
+            // hashCode() to pass.
+            for (int j = 0; j < 4; j += 1) {
+                params.add(1);
             }
             ComplexOomage com = new ComplexOomage(params);
             deadlyList.add(com);
