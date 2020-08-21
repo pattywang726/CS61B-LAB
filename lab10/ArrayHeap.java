@@ -139,10 +139,14 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (size + 1 == contents.length) {
             resize(contents.length * 2);
         }
-        size += 1;
-        int index = size;
-        contents[index] = new Node(item, priority);
-        swim(index);
+        if (item != null) {
+            size += 1;
+            int index = size;
+            contents[index] = new Node(item, priority);
+            swim(index);
+        } else {
+            return;
+        }
         /* DONE: Your code here! */
     }
 
