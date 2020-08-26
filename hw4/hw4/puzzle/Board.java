@@ -74,15 +74,11 @@ public class Board implements WorldState{
     }
 
     public int hamming() {
+        int[] worLdList = buildWorldList();
         int numberWrong = 0;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if ((i == size-1) && (j == size-1)) {
-                    break;
-                }
-                if (tileAt(i, j) != goal[i][j]) {
-                    numberWrong += 1;
-                }
+        for (int a = 1; a < size*size + 1; a++) {
+            if (a != worLdList[a] && worLdList[a] != 0) {
+                numberWrong += 1;
             }
         }
         return numberWrong;
@@ -132,6 +128,16 @@ public class Board implements WorldState{
         return manhattan();
     }
 
+    private boolean equalsTest (int[][] thisworld, int[][] world1) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (thisworld[i][j] != world1[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     public boolean equals(Object y) {
         if (this == y) {
             return true;
@@ -142,10 +148,10 @@ public class Board implements WorldState{
 
         Board board1 = (Board) y;
 
-        if (world != null ? !world.equals(board1.world) : board1.world != null) {
+        if (world != null ? ! equalsTest(this.world, board1.world) : board1.world != null) {
             return false;
         }
-        return goal != null ? goal.equals(board1.goal) : board1.goal == null;
+        return goal != null ? equalsTest(this.goal, board1.goal) : board1.goal == null;
     }
 
     /** Returns the string representation of the board. 
@@ -164,4 +170,14 @@ public class Board implements WorldState{
         return s.toString();
     }
 
+    @Override
+    public int hashCode() {
+        int result = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                result = result * 10 + tileAt(i, j);
+            }
+        }
+        return result;
+    }
 }

@@ -4,10 +4,10 @@ import edu.princeton.cs.algs4.*;
 import java.util.Comparator;
 
 public class Solver {
-    public int MOVES;
-    public int totalM = 0;
-    public WorldState start;
-    public Stack<WorldState> solution = new Stack<>();
+    private int MOVES;
+    private int totalM = 0;
+    private WorldState start;
+    private Stack<WorldState> solution = new Stack<>();
 
     public Solver(WorldState initial) {
         start = initial;
