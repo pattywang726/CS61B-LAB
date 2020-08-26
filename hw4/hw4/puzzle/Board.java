@@ -129,6 +129,14 @@ public class Board implements WorldState{
     }
 
     private boolean equalsTest (int[][] thisworld, int[][] world1) {
+        //*  checks that individual entries of array are equal
+        //  *  argument is object of type Object
+        //  *  argument is null
+        //  *  argument is Board of different size
+
+        if (this.size != world1.length) {
+            return false;
+        }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (thisworld[i][j] != world1[i][j]) {
