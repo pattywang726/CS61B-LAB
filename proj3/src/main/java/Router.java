@@ -1,5 +1,5 @@
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,9 +23,29 @@ public class Router {
      * @param destlat The latitude of the destination location.
      * @return A list of node id's in the order visited on the shortest path.
      */
+
+
+
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        if (!validate(stlon, stlat, destlon, destlat)) {
+            return new ArrayList<>();
+        }
+        // FIND THE START NODE AND END NODE
+        long s = g.closest(stlon, stlat);
+        long t = g.closest(destlon, destlat);
+        return new AStarSolver(g, s, t).solution();
+    }
+
+    private static boolean validate(double stlon, double stlat, double destlon, double destlat) {
+        if (stlon > MapServer.ROOT_LRLON || stlon < MapServer.ROOT_ULLON ||
+                stlat > MapServer.ROOT_ULLAT || stlat < MapServer.ROOT_LRLAT) {
+            return false;
+        } else if (destlon > MapServer.ROOT_LRLON || destlon < MapServer.ROOT_ULLON ||
+                destlat > MapServer.ROOT_ULLAT || destlat < MapServer.ROOT_LRLAT) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -36,10 +56,81 @@ public class Router {
      * @return A list of NavigatiionDirection objects corresponding to the input
      * route.
      */
+
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        List<NavigationDirection> directions = new ArrayList<>();
+        // find the real cross Node;
+        Map<Long, Object> RealRoute = new HashMap<>();
+        String lastWay = "0";
+        Long lastStart = route.get(0);
+
+        for (int index = 1; index < route.size(); index += 1) {
+            Long previousN = route.get(index - 1);
+            Long currentN = route.get(index);
+            String thisWay = WayName(g, previousN, currentN);
+            if (!thisWay.equals(lastWay)) {
+                double lastWayD = g.distance(previousN, lastStart);
+                NavigationDirection step = crossNavi(g, route, index);
+                step.way = thisWay;
+                // update the distance of last step;
+                if (directions.size() != 0) {
+                    directions.get(directions.size() - 1).distance = lastWayD;
+                }
+                directions.add(step);
+                // prepare for next loop;
+                lastStart = previousN;
+                lastWay = WayName(g, previousN, currentN);
+
+                // manage the end node
+            } else if (index == route.size() - 1) {
+                // update the distance of last step;
+                double lastWayD = g.distance(currentN, lastStart);
+                directions.get(directions.size() - 1).distance = lastWayD;
+            }
+        }
+        return directions; // DONE
     }
 
+    private static NavigationDirection crossNavi(GraphDB g, List<Long> route, int index) {
+            NavigationDirection step = new NavigationDirection();
+            if (index == 1) {
+                step.direction = NavigationDirection.START;
+            } else {
+                // get the bearing of previousNode and currentNode;
+                double pBearing = g.bearing(route.get(index - 2), route.get(index - 1));
+                double cBearing = g.bearing(route.get(index - 1), route.get(index));
+                step.direction = direction(pBearing, cBearing);
+            }
+            return step;
+    }
+
+    private static String WayName(GraphDB g, Long pN, Long cN) {
+        String currentN = String.valueOf(pN);
+        String previousN = String.valueOf(cN);
+        String WayName = "";
+        for (GraphDB.Edge edge: g.Graph.get(previousN)) {
+            if (currentN.equals(edge.nd2)) {
+                WayName = edge.extraInfo;
+            }
+        }
+        return WayName;
+    }
+
+    private static int direction (double previousB, double currentB) {
+        double degree = currentB - previousB;
+        if (degree <= 15 && degree >= -15) {
+            return NavigationDirection.STRAIGHT;
+        } else if (degree >= -30 && degree <= 30) {
+            if (degree < 0) {return NavigationDirection.SLIGHT_LEFT;}
+            return NavigationDirection.SLIGHT_RIGHT;
+        } else if (degree >= -100 && degree <= 100) {
+            if (degree < 0) {return NavigationDirection.LEFT;}
+            return NavigationDirection.RIGHT;
+        } else {
+            if (degree < 0) {return NavigationDirection.SHARP_LEFT;}
+            return NavigationDirection.SHARP_RIGHT;
+        }
+    }
 
     /**
      * Class to represent a navigation direction, which consists of 3 attributes:
