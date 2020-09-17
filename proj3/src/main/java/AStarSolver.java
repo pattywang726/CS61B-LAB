@@ -33,7 +33,7 @@ public class AStarSolver {
         vertex n = PQ.delMin();
 //        marked.put(n.v, true);
         // n.v != t will fail; since == means the same memory box; but equal means they have same value;
-        while (!n.v.equals(t)) {
+        while (!n.v.equals(t) && !PQ.isEmpty()) {
             for (Long w : g.adjacent(n.v)) {
                 double neighborFromS = distS.get(n.v) + g.distance(n.v, w);
                 if (neighborFromS < distS.get(w)) {
