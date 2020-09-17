@@ -9,7 +9,7 @@ public class AStarSolver {
     private Map<Long, Double> distS;
     private Map<Long, Double> distT;
     // marked: prevent multiple copies
-    private Map<Long, Boolean> marked;
+//    private Map<Long, Boolean> marked;
     private List<Long> route = new ArrayList<>();
     private MinPQ<vertex> PQ;
 
@@ -17,12 +17,12 @@ public class AStarSolver {
         parentV = new HashMap<>();
         distS = new HashMap<>();
         distT = new HashMap<>();
-        marked = new HashMap<>();
+//        marked = new HashMap<>();
 
         for (Long vertice: g.vertices()) {
             distS.put(vertice, Double.POSITIVE_INFINITY);
             distT.put(vertice, g.distance(vertice, t));
-            marked.put(vertice, false);
+//            marked.put(vertice, false);
         }
 
         parentV.put(s, s);
@@ -31,7 +31,7 @@ public class AStarSolver {
         PQ.insert(new vertex(s, distS.get(s) + distT.get(s)));
 
         vertex n = PQ.delMin();
-        marked.put(n.v, true);
+//        marked.put(n.v, true);
         // n.v != t will fail; since == means the same memory box; but equal means they have same value;
         while (!n.v.equals(t)) {
             for (Long w : g.adjacent(n.v)) {
@@ -43,10 +43,10 @@ public class AStarSolver {
                 }
             }
             n =  PQ.delMin();
-            if (marked.get(n.v)) {
-                n = PQ.delMin();
-            }
-            marked.put(n.v, true);
+//            if (marked.get(n.v)) {
+//                n = PQ.delMin();
+//            }
+//            marked.put(n.v, true);
         }
 
         long index = t;
