@@ -12,12 +12,14 @@ public class AStarSolver {
 //    private Map<Long, Boolean> marked;
     private List<Long> route = new ArrayList<>();
     private MinPQ<vertex> PQ;
+    private boolean goal;
 
     public AStarSolver(GraphDB g, Long s, Long t) {
         parentV = new HashMap<>();
         distS = new HashMap<>();
         distT = new HashMap<>();
 //        marked = new HashMap<>();
+        goal = false;
 
         for (Long vertice: g.vertices()) {
             distS.put(vertice, Double.POSITIVE_INFINITY);
@@ -30,10 +32,31 @@ public class AStarSolver {
         PQ = new MinPQ<>();
         PQ.insert(new vertex(s, distS.get(s) + distT.get(s)));
 
-        vertex n = PQ.delMin();
+        vertex n;
 //        marked.put(n.v, true);
         // n.v != t will fail; since == means the same memory box; but equal means they have same value;
-        while (!n.v.equals(t) && !PQ.isEmpty()) {
+//        while (!n.v.equals(t) || !PQ.isEmpty()) {
+//            for (Long w : g.adjacent(n.v)) {
+//                double neighborFromS = distS.get(n.v) + g.distance(n.v, w);
+//                if (neighborFromS < distS.get(w)) {
+//                    parentV.put(w, n.v);
+//                    distS.put(w, neighborFromS);
+//                    PQ.insert(new vertex(w, distS.get(w) + distT.get(w)));
+//                }
+//            }
+//            n =  PQ.delMin();
+////            if (marked.get(n.v)) {
+////                n = PQ.delMin();
+////            }
+////            marked.put(n.v, true);
+//        }
+
+        while (!PQ.isEmpty()) {
+            n = PQ.delMin();
+            if (n.v.equals(t)) {
+                goal = true;
+                break;
+            }
             for (Long w : g.adjacent(n.v)) {
                 double neighborFromS = distS.get(n.v) + g.distance(n.v, w);
                 if (neighborFromS < distS.get(w)) {
@@ -42,11 +65,6 @@ public class AStarSolver {
                     PQ.insert(new vertex(w, distS.get(w) + distT.get(w)));
                 }
             }
-            n =  PQ.delMin();
-//            if (marked.get(n.v)) {
-//                n = PQ.delMin();
-//            }
-//            marked.put(n.v, true);
         }
 
         long index = t;
@@ -77,6 +95,10 @@ public class AStarSolver {
     }
     // BUG!!: Broken comparators that don’t handle cases like where two items are equal.!!
     public List<Long> solution() {
+        if (!goal) {
+            return new ArrayList<>();
+        }
+
         List<Long> solution= new LinkedList<>();
         for (int i = route.size()-1; i >=0; i -= 1) {
             solution.add(route.get(i));
