@@ -1,4 +1,11 @@
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
 
 public class MergeSort {
     /**
@@ -35,7 +42,13 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> qOfq = new Queue<Queue<Item>>();
+        while (!items.isEmpty()) {
+            Queue<Item> newQ = new Queue<Item>();
+            newQ.enqueue(items.dequeue());
+            qOfq.enqueue(newQ);
+        }
+        return qOfq;
     }
 
     /**
@@ -54,13 +67,71 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         // Your code here!
-        return null;
+        Queue<Item> newSortedQ = new Queue<Item>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            newSortedQ.enqueue(getMin(q1, q2));
+        }
+        return newSortedQ;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
         // Your code here!
-        return items;
+        if (items.size() <= 1) {
+            return items;
+        }
+        // splitting -> Use a loop to remove the first half of the items and put them into a new queue.
+//        Queue<Queue<Item>> QItems = makeSingleItemQueues(items);
+        int N = items.size();
+        Queue<Item> left = new Queue<Item>();
+        for (int i=0; i < N / 2; i += 1) {
+            left.enqueue(items.dequeue());
+        }
+        Queue<Item> right = items;
+
+        // MergeSort each half
+        Queue<Item> sortedL = mergeSort(left);
+        Queue<Item> sortedR = mergeSort(right);
+
+        // merging
+        return mergeSortedQueues(sortedL, sortedR);
+    }
+
+    public static void main(String[] args) {
+        // Unsorted Queue of Integer
+        ArrayList<Integer> IList = new ArrayList<>();
+        for (int i=1; i<1000; i+= 1) {
+            IList.add(i);
+        }
+        Collections.shuffle(IList);
+        Queue qInt = new Queue<Integer>();
+
+        for (Integer item : IList) {
+            qInt.enqueue(item);
+        }
+        System.out.println("Original unsorted queue:  " + qInt);
+        Queue<Integer> sorted = new Queue<>();
+        sorted = MergeSort.mergeSort(qInt);
+        System.out.println("Sorted queue:  " + sorted);
+
+        // Unsorted Queue of String
+        ArrayList<String> SList = new ArrayList<String>();
+        SList.add("ide");
+        SList.add("quiz");
+        SList.add("geeksforgeeks");
+        SList.add("quiz");
+        SList.add("practice");
+        SList.add("qa");
+
+        Collections.shuffle(SList);
+        Queue qStr = new Queue<String>();
+        for (String item : SList) {
+            qStr.enqueue(item);
+        }
+        System.out.println("Original unsorted queue:  " + qStr);
+        Queue<String> sortedS = new Queue<>();
+        sortedS = MergeSort.mergeSort(qStr);
+        System.out.println("Sorted queue:  " + sortedS);
     }
 }

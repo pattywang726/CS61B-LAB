@@ -1,5 +1,8 @@
 import edu.princeton.cs.algs4.Queue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class QuickSort {
     /**
      * Returns a new queue that contains the given queues catenated together.
@@ -48,12 +51,82 @@ public class QuickSort {
             Queue<Item> unsorted, Item pivot,
             Queue<Item> less, Queue<Item> equal, Queue<Item> greater) {
         // Your code here!
+        for (Item item : unsorted) {
+            if (item.equals(pivot)) {
+                equal.enqueue(item);
+            } else if (item.compareTo(pivot) < 0) {
+                less.enqueue(item);
+            } else {
+                greater.enqueue(item);
+            }
+        }
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
         // Your code here!
-        return items;
+        Queue<Item> less = new Queue<>();
+        Queue<Item> greater = new Queue<>();
+        Queue<Item> equal = new Queue<>();
+        Queue<Item> left;
+        Queue<Item> right;
+        Item pivot = getRandomItem(items);
+        partition(items, pivot, less, equal, greater);
+
+        // for left part, catenate the pivot to the left.
+        if (less.size() <= 1) {
+            left = catenate(less, equal);
+        } else {
+            left = quickSort(less);
+            left = catenate(left, equal);
+        }
+        if (greater.size() <= 1) {
+            right = greater;
+        } else {
+            right = quickSort(greater);
+        }
+        return catenate(left, right);
+    }
+
+    public static void main(String[] args) {
+        // Unsorted Queue of Integer
+        ArrayList<Integer> IList = new ArrayList<>();
+            for (int i=1; i<10; i+= 1) {
+                if (i % 2.0 == 0) {
+                    IList.add(1);
+                } else {
+                    IList.add(i);
+                }
+        }
+        Collections.shuffle(IList);
+        Queue qInt = new Queue<Integer>();
+
+            for (Integer item : IList) {
+            qInt.enqueue(item);
+        }
+            System.out.println("Original unsorted queue:  " + qInt);
+        Queue<Integer> sorted = new Queue<>();
+        sorted = QuickSort.quickSort(qInt);
+            System.out.println("Sorted queue:  " + sorted);
+
+        // Unsorted Queue of String
+        ArrayList<String> SList = new ArrayList<String>();
+            SList.add("ide");
+            SList.add("quiz");
+            SList.add("geeksforgeeks");
+            SList.add("quiz");
+            SList.add("practice");
+            SList.add("qa");
+
+            Collections.shuffle(SList);
+        Queue qStr = new Queue<String>();
+            for (String item : SList) {
+            qStr.enqueue(item);
+        }
+            System.out.println("Original unsorted queue:  " + qStr);
+        Queue<String> sortedS = new Queue<>();
+        sortedS = QuickSort.quickSort(qStr);
+            System.out.println("Sorted queue:  " + sortedS);
     }
 }
