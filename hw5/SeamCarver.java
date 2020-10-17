@@ -10,7 +10,7 @@ public class SeamCarver {
     private Picture p;
 
     public SeamCarver(Picture picture) {
-        p = picture;
+        p = new Picture(picture);
     }
     // current picture
     public Picture picture() {
@@ -39,13 +39,16 @@ public class SeamCarver {
         // check if it's border pixel for x-gradient
         if (x == 0) {
             left = width() - 1;
-        } else if (x == width() - 1) {
+        }
+        // in case the col is 1 ; or row is 1
+        if (x == width() - 1) {
             right = 0;
         }
         // check if it's border pixel for y-gradient
         if (y == 0) {
             top = height() - 1;
-        } else if (y == height() - 1) {
+        }
+        if (y == height() - 1) {
             bottom = 0;
         }
         // x-gradient
@@ -72,10 +75,14 @@ public class SeamCarver {
     // find the index which corresponds to the top left, top middle, and top right;
     private ArrayList<Integer> topList (int x, int y) {
         ArrayList<Integer> topList = new ArrayList<Integer>();
+        if (width() == 1) {
+            topList.add(0, convert(x,y-1));
+            return topList;
+        }
         // check if top row hit the border;
-            topList.add(0, convert(x-1,y-1));
-            topList.add(1, convert(x,y-1));
-            topList.add(2, convert(x+1,y-1));
+        topList.add(0, convert(x-1,y-1));
+        topList.add(1, convert(x,y-1));
+        topList.add(2, convert(x+1,y-1));
         if (x == 0) {
             topList.remove(0);
         } else if (x == width()-1) {
@@ -100,10 +107,12 @@ public class SeamCarver {
                     ArrayList<Integer> topIndex = topList(i, j);
                     Double minCost = cost.get(topIndex.get(0));
                     int minIndex = 0;
-                    for (int k = 1; k < topIndex.size(); k += 1) {
-                        if (cost.get(topIndex.get(k)) < minCost) {
-                            minCost = cost.get(topIndex.get(k));
-                            minIndex = k;
+                    if (topIndex.size() != 1) {
+                        for (int k = 1; k < topIndex.size(); k += 1) {
+                            if (cost.get(topIndex.get(k)) < minCost) {
+                                minCost = cost.get(topIndex.get(k));
+                                minIndex = k;
+                            }
                         }
                     }
                     // add the current energy + cost from top row
