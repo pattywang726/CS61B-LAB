@@ -10,11 +10,11 @@ public class SeamCarver {
     private Picture p;
 
     public SeamCarver(Picture picture) {
-        p = new Picture(picture);
+        p = picture;
     }
     // current picture
     public Picture picture() {
-        return p;
+        return new Picture(p);
     }
     // width of current picture
     public int width() {
